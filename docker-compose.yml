@@ -1,0 +1,29 @@
+version: '3.8' 
+
+services:
+  redis:
+    image:  redis:latest
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:  
+      - redis_data:/data  
+    networks:  
+      - redis-network 
+  db:  
+    image: postgres:latest  
+    environment:  
+      POSTGRES_DB: tokens  
+      POSTGRES_USER: user  
+      POSTGRES_PASSWORD: denis  
+    ports:  
+      - "5432:5432"  
+    volumes:  
+      - postgres_data_tokens:/var/lib/postgresql/data  
+
+volumes:  
+  postgres_data_tokens:
+  redis_data:
+  
+networks:  
+  redis-network: 
