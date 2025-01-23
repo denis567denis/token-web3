@@ -19,10 +19,10 @@ services:
     ports:  
       - "5432:5432"  
     volumes:  
-      - postgres_data_tokens:/var/lib/postgresql/data  
+      - postgres_tokens:/var/lib/postgresql/data  
 
 volumes:  
-  postgres_data_tokens:
+  postgres_tokens:
   redis_data:
   
 networks:  

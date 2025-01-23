@@ -1,13 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../infrastructure/entities/user.entity';
 import { UserRepository } from '../infrastructure/repositories/user.repository';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
   ) {}
@@ -21,7 +18,7 @@ export class UsersService {
         { expiresIn: parseInt(process.env.JWT_LIFE) },
       );
       return {
-        existingUser,
+        user: existingUser,
         authToken,
       };
     }

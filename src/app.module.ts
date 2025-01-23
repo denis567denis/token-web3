@@ -3,45 +3,47 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheModule } from '@nestjs/cache-manager';
 import { JwtModule } from '@nestjs/jwt';
-import * as redisStore from 'cache-manager-redis-store';
 import { OrdersModule } from './orders/orders.module';
 import { UsersModule } from './users/users.module';
 import { Web3Module } from './web3/web3.module';
 import { EventsModule } from './events/events.module';
 import { AuthGuard } from './libs/guards/auth.guard';
+import { configuration } from './config/config';
+import { PostgresConfigService } from './config/postgres/postgres-config.service';
+import { JwtConfigService } from './config/jwt/jwt.config.service';
+import { CacheConfigService } from './config/cache/cache-config.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      load: configuration,
       envFilePath: '.env',
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.HOST,
-      port: parseInt(process.env.PG_PORT),
-      username: process.env.PG_USER,
-      password: process.env.PG_PASSWORD,
-      database: process.env.PG_DB,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useClass: PostgresConfigService,
     }),
-    CacheModule.register({
-      store: redisStore,
-      host: process.env.HOST,
-      port: process.env.REDIS_PORT,
-      ttl: parseInt(process.env.REDIS_TIME_SAVE_CAHCE),
-      isGlobal: true,
-    }),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useClass: JwtConfigService,
       global: true,
+    }),
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      useClass: CacheConfigService,
+      isGlobal: true,
     }),
     OrdersModule,
     Web3Module,
     EventsModule,
     UsersModule,
   ],
-  providers: [AuthGuard],
+  providers: [
+    AuthGuard,
+    JwtConfigService,
+    CacheConfigService,
+    PostgresConfigService,
+  ],
 })
 export class AppModule {}

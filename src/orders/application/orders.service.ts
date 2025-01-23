@@ -1,6 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Cache } from 'cache-manager';
 import { OrderEntity } from '../infrastructure/entities/order.entity';
 import {
@@ -15,7 +14,6 @@ import { OrdersRepository } from '../infrastructure/repositories/orders.reposito
 @Injectable()
 export class OrdersService {
   constructor(
-    @InjectRepository(OrderEntity)
     private ordersRepository: OrdersRepository,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}

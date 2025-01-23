@@ -4,7 +4,7 @@ export interface CreateOrderInterface {
   tokenB: string;
   amountA: string;
   amountB: string;
-  user: string;
+  addressUser: string;
   isActive?: boolean;
   isMarket?: boolean;
   isFilled?: boolean;
@@ -13,7 +13,7 @@ export interface CreateOrderInterface {
 export interface GetOrdersInterface {
   tokenA?: string;
   tokenB?: string;
-  user?: string;
+  addressUser?: string;
   active?: boolean;
 }
 

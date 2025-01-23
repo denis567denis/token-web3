@@ -21,7 +21,7 @@ export class OrderEntity {
   amountB: string;
 
   @Column()
-  user: string;
+  addressUser: string;
 
   @Column({ default: true })
   isActive: boolean;

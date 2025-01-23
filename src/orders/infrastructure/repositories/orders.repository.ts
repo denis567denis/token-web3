@@ -31,8 +31,10 @@ export class OrdersRepository {
     if (filter.tokenB) {
       query.andWhere('order.tokenB = :tokenB', { tokenB: filter.tokenB });
     }
-    if (filter.user) {
-      query.andWhere('order.user = :user', { user: filter.user });
+    if (filter.addressUser) {
+      query.andWhere('order.addressUser = :addressUser', {
+        addressUser: filter.addressUser,
+      });
     }
     if (filter.active !== undefined) {
       query.andWhere('order.isActive = :active', { active: filter.active });
